@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Setting path fills</title>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="d3.v3.min.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */		
+		</style>
+	</head>
+	<body>
+	<div id="container" style="min-height: 400px; margin: 0 auto; float: right;"></div>
+
+		<script type="text/javascript">
+
+	d3.csv("sampleusbar.csv", function(tsv) {
+		
+		var data=tsv;
+		var years = ['2013','2014','2015','2016']
+		var arr1 = [];
+	    var arr2 = [];
+	    var arr3 = [];
+	    var arr4 = [];
+	    var id = 53;
+
+	    for (var i = 0; i < data.length; i++) {
+	      if(data[i].year=='2013'&&data[i].id==id){
+	          //arr1.push(data[i].barid);
+	          arr1.push(parseInt(data[i].IntStudents.replace(",", "")));
+	          arr1.push(parseInt(data[i].Jobs.replace(",", "")));
+	          arr1.push(parseFloat(data[i].usd.replace("$", "")));
+	        }
+	        if(data[i].year=='2014'&&data[i].id==id){
+	          //arr1.push(data[i].barid);
+	          arr2.push(parseInt(data[i].IntStudents.replace(",", "")));
+	          arr2.push(parseInt(data[i].Jobs.replace(",", "")));
+	          arr2.push(parseFloat(data[i].usd.replace("$", "")));
+	        }
+	        if(data[i].year=='2015'&&data[i].id==id){
+	          //arr1.push(data[i].barid);
+	          arr3.push(parseInt(data[i].IntStudents.replace(",", "")));
+	          arr3.push(parseInt(data[i].Jobs.replace(",", "")));
+	          arr3.push(parseFloat(data[i].usd.replace("$", "")));
+	        }
+	        if(data[i].year=='2016'&&data[i].id==id){
+	          //arr1.push(data[i].barid);
+	          arr4.push(parseInt(data[i].IntStudents.replace(",", "")));
+	          arr4.push(parseInt(data[i].Jobs.replace(",", "")));
+	          arr4.push(parseFloat(data[i].usd.replace("$", "")));
+	        }
+	      }
+	      //console.log(arr1,arr2,arr3,arr4);
+		mainbubble(arr1,arr2,arr3,arr4);
+	});
+		//mainbar();
+
+		function mainbubble(arr1,arr2,arr3,arr4){
+			Highcharts.chart('container', {
+
+			    chart: {
+			        type: 'bubble',
+			        plotBorderWidth: 1,
+			        zoomType: 'xy'
+			    },
+
+			    title: {
+			        text: 'Highcharts bubbles with radial gradient fill'
+			    },
+			     tooltip: {
+			        useHTML: true,
+			        headerFormat: '<table>',
+			        pointFormat:
+			            '<tr><th>Students:</th><td>{point.x}</td></tr>' +
+			            '<tr><th>Jobs:</th><td>{point.y}</td></tr>' +
+			            '<tr><th>Economy:</th><td>${point.z}million</td></tr>',
+			        footerFormat: '</table>',
+			        followPointer: true
+			    },
+			    xAxis: {
+			        gridLineWidth: 1,
+			        title: {
+		            text: 'Total Students'
+		        }
+			    },
+
+			    yAxis: {
+			        startOnTick: false,
+			        title: {
+		            text: 'Total Jobs'
+		        },
+			        endOnTick: false
+			        
+			    },
+
+			    series: [{
+			    		name: '2013',
+			        data: [
+			            arr1
+			        ],
+			        marker: {
+			            fillColor: {
+			                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+			                stops: [
+			                    [0, '#edf8e9']
+			                ]
+			            }
+			        }
+			    }, {
+			    	name: '2014',
+			        data: [
+			        	arr2
+			        ],
+			        marker: {
+			            fillColor: {
+			                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+			                stops: [
+			                    [0, '#bae4b3']
+			                ]
+			            }
+			        }
+			    },{
+			    	name: '2015',
+			        data: [
+			          arr3
+			        ],
+			        marker: {
+			            fillColor: {
+			                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+			                stops: [
+			                    [0, '#74c476']
+			                ]
+			            }
+			        }
+			    },{
+			    	name: '2016',
+			        data: [
+			          arr4
+			        ],
+			        marker: {
+			            fillColor: {
+			                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+			                stops: [
+			                    [0, '#238b45']
+			                ]
+			            }
+			        }
+			    }
+			    ]
+
+			});
+		}
+	function mainbar1(States,students,jobs){
+		//console.log(States,students,jobs);
+			Highcharts.chart('barchart', {
+			    chart: {
+			        type: 'bar'
+			    },
+			    title: {
+			        text: 'Total Students and Jobs supported by State'
+			    },
+			    xAxis: {
+			        categories: States
+			    },
+			    yAxis: [{
+			        min: 0,
+			        title: {
+			            text: 'Students'
+			        }
+			    }],
+			    legend: {
+			        shadow: false
+			    },
+			    tooltip: {
+			        shared: true
+			    },
+			    plotOptions: {
+			        column: {
+			            grouping: false,
+			            shadow: false,
+			            borderWidth: 0
+			        }
+			    },
+			    series: [{
+			        name: 'Students',
+			        color: 'rgba(165,170,217,1)',
+			        data: students,
+			        pointPadding: -0.4,
+			  		pointPlacement: 0
+			    }, {
+			        name: 'Jobs',
+			        color: 'rgba(126,86,134,.9)',
+			        data: jobs,
+			        pointPadding: 0.5,
+			  		pointPlacement: 0.25
+			    }]
+			});
+		}
+		</script>
+	</body>
+</html>
